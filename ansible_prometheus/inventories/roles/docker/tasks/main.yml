@@ -1,0 +1,55 @@
+---
+- name: Update apt packages and install packages to allow apt to use a repository over HTTPS
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+- name: Add Docker’s official GPG key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg 
+    keyring: /etc/apt/trusted.gpg.d/docker.gpg
+    state: present
+- name: Add Docker apt repository.
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+- name: Install docker-ce
+  shell: |
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    echo \
+      "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+- name: Update apt and install docker-ce
+  ansible.builtin.apt:
+    update_cache: yes
+    name: docker-ce
+    state: latest
+- name: Install docker-compose
+  ansible.builtin.apt:
+    name: docker-compose
+    state: present
+- name: Start and enable docker service
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
+
+
+
+
+  
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+     

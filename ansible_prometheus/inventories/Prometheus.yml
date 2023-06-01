@@ -1,0 +1,7 @@
+---
+- name: Install docker
+  hosts: master
+  roles:
+    # - { role: docker, tags: common }
+    - {role: prometheus, tags: prometheus}
+    

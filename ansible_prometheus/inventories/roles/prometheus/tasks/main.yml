@@ -1,0 +1,22 @@
+---
+
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: /home/ubuntu/prometheus
+    state: directory
+    mode: '0755'
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: ./docker-compose.yml
+    dest: /home/ubuntu/prometheus
+- name: Install and config prometheus
+  include_tasks: prometheus.yml
+  tags: install_prometheus
+
+# - name: Install and config grafana
+#   include_tasks: grafana.yaml
+#   tags: install_grafana
+
+# - name: Install and config alertmanager
+#   include_tasks: alertmanager.yaml
+#   tags: install_alertmanager
